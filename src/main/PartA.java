@@ -22,10 +22,19 @@ public class PartA
 		printList(people.Where(new IPredicate<Person>(){
 			public Boolean execute(Person p) { return p.phone % 2 == 0; }
 		}));
-		System.out.println();
 		printList(people.Select(new IDelegate<String, Person>() {
 			public String execute(Person p) { return p.last; }
 		}));
+		
+		printList(people.Where(new TotalLengthLess(13))
+				.Select(new IDelegate<String, Person>() {
+					public String execute(Person p) { return p.phone.toString(); }
+				}));
+		printList(people.Where(new TotalLengthLess(16))
+				.Select(new IDelegate<Integer, Person>() {
+					public Integer execute(Person p) { return (p.first + p.last).length(); }
+				}));
+		
 	}
 	
 	public static void printList(IQContainer<? extends Object> list)
@@ -33,6 +42,23 @@ public class PartA
 		for (Object p : list)
 		{
 			System.out.println(p);
+		}
+		System.out.println();
+	}
+	
+	private static class TotalLengthLess implements IPredicate<Person>
+	{
+		private int length;
+		
+		public TotalLengthLess(int l)
+		{
+			length = l;
+		}
+		
+		public Boolean execute(Person p)
+		{
+			int totalLength = p.first.length() + p.last.length();
+			return totalLength < length;
 		}
 	}
 	
