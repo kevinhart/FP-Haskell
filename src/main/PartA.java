@@ -1,9 +1,12 @@
 package main;
 
+import container.IQContainer;
+import container.QueryableArrayList;
 import delegate.*;
 
 public class PartA 
 {
+	public static QueryableArrayList<Person> people;
 
 	/**
 	 * Delegate test
@@ -11,24 +14,26 @@ public class PartA
 	 */
 	public static void main(String[] args)
 	{
-		IPredicate<Integer> p = new IsZero();
-		if (p.execute(0))
-		{
-			System.out.println("Zero equals zero!");
-		} else {
-			System.out.println("The laws of physics no longer apply.  God help us.");
-		}
+		people = new QueryableArrayList<Person>();
+		people.add(new Person("Billy", "Mays", 5574824));
+		people.add(new Person("Vince", "Offer", 7426969));
+		people.add(new Person("Anthony", "Sullivan", 5555555));
 
+		printList(people.Where(new IPredicate<Person>(){
+			public Boolean execute(Person p) { return p.phone % 2 == 0; }
+		}));
+		System.out.println();
+		printList(people.Select(new IDelegate<String, Person>() {
+			public String execute(Person p) { return p.last; }
+		}));
 	}
 	
-	// Predicate test class
-	private static class IsZero implements IPredicate<Integer>
+	public static void printList(IQContainer<? extends Object> list)
 	{
-		@Override
-		public Boolean execute(Integer a)
+		for (Object p : list)
 		{
-			return a == 0;
+			System.out.println(p);
 		}
 	}
-
+	
 }
