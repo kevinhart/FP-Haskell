@@ -1,5 +1,7 @@
 package container;
 
+import java.util.Collection;
+
 import delegate.*;
 
 /**
@@ -8,7 +10,7 @@ import delegate.*;
  *
  * @param <T> Type of contained objects.
  */
-public interface IQContainer<T>
+public interface IQContainer<T> extends Collection<T>
 {
 	/**
 	 * Filters this container by the given predicate.
