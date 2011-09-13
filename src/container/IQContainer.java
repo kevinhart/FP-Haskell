@@ -28,4 +28,13 @@ public interface IQContainer<T> extends Collection<T>
 	 * @return a new container
 	 */
 	<U> IQContainer<U> Select(IDelegate<U, T> selector);
+	
+	/**
+	 * Sorts the elements in the container using the given sort key.
+	 * 
+	 * @param sortkey
+	 * @return a new container containing all values from the old
+	 * collection, in sorted order
+	 */
+	IQContainer<T> Sort(ISortDelegate<T> sortkey);
 }
