@@ -29,8 +29,8 @@ public class PartA
 		cs_people = new QueryableArrayList<Person>();
 		cs_people.add(new Person("Sandy", "Ferrara", 55178, false));
 		cs_people.add(new Person("Tina", "Sturgis", 57905, false));
-		cs_people.add(new Person("Jason", "Harrison", 52529, false));
-		cs_people.add(new Person("Sam", "Waters", 54934, false));
+		cs_people.add(new Person("Jason", "Harrison", 52529, true));
+		cs_people.add(new Person("Sam", "Waters", 54934, true));
 		
 		// print people with even phone numbers
 		printList(people.Where(new IPredicate<Person>(){
@@ -62,17 +62,14 @@ public class PartA
 		// sort by first name and then by gender
 		printList(people.Sort( new Comparator<Person>() {
 			public int compare(Person p, Person q) { return p.first.compareTo(q.first); }
-		}).Sort( new Comparator<Person>() {
-			public int compare(Person p, Person q) { return ((Boolean)(p.male)).compareTo((Boolean)(q.male)); }
-		}));
+		}).Sort( new GenderComparator() ));
 		
 		// cs people query
 		printList(cs_people.Where(new IPredicate<Person>(){
 			public Boolean execute(Person p) { return p.phone % 2 == 0; }
-		}).Sort( new ISortDelegate<Person>() {
-			public Object execute(Person p) { return p.male ? "M" : "F"; }
-		}).Sort( new ISortDelegate<Person>() {
-			public Object execute(Person p) { return p.last; }
+		}).Sort( new GenderComparator()
+		).Sort( new Comparator<Person>() {
+			public int compare(Person p, Person q) { return p.last.compareTo(q.last); }
 		}).Select(new IDelegate<String, Person>() {
 			public String execute(Person p) { return p.first; }
 		}));
@@ -87,7 +84,13 @@ public class PartA
 		System.out.println();
 	}
 	
-	
+	private static class GenderComparator implements Comparator<Person>
+	{
+		public int compare(Person p, Person q)
+		{
+			return ((Boolean)(p.male)).compareTo((Boolean)(q.male));
+		}
+	}
 	
 	private static class TotalLengthLess implements IPredicate<Person>
 	{
