@@ -1,6 +1,7 @@
 package container;
 
 import java.util.Collection;
+import java.util.Comparator;
 
 import delegate.*;
 
@@ -36,5 +37,5 @@ public interface IQContainer<T> extends Collection<T>
 	 * @return a new container containing all values from the old
 	 * collection, in sorted order
 	 */
-	IQContainer<T> Sort(ISortDelegate<T> sortkey);
+	IQContainer<T> Sort(Comparator<T> sortkey);
 }

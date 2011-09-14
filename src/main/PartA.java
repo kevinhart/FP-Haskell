@@ -1,5 +1,7 @@
 package main;
 
+import java.util.Comparator;
+
 import container.IQContainer;
 import container.QueryableArrayList;
 import delegate.*;
@@ -49,10 +51,10 @@ public class PartA
 				}));
 		
 		// sort by first name and then by gender
-		printList(people.Sort( new ISortDelegate<Person>() {
-			public Object execute(Person p) { return p.first; }
-		}).Sort( new ISortDelegate<Person>() {
-			public Object execute(Person p) { return p.male ? "M" : "F"; }
+		printList(people.Sort( new Comparator<Person>() {
+			public int compare(Person p, Person q) { return p.first.compareTo(q.first); }
+		}).Sort( new Comparator<Person>() {
+			public int compare(Person p, Person q) { return ((Boolean)(p.male)).compareTo((Boolean)(q.male)); }
 		}));
 	}
 	
